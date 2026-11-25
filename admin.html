@@ -1,1214 +1,639 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Penjaga akses admin: halaman disembunyikan sampai login terverifikasi -->
-  <script>document.documentElement.style.visibility="hidden"</script>
-  <script src="admin-access.js"></script>
-  <title>Admin Dashboard CMS - Pengelolaan Website Profil TK</title>
-
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <!-- Google Fonts: Fredoka & Plus Jakarta Sans -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="assets/css/custom.css">
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              yellow: '#FBBF24',
-              coral: '#F87171',
-              sky: '#38BDF8',
-              emerald: '#34D399',
-              purple: '#A78BFA'
-            }
-          },
-          fontFamily: {
-            heading: ['Fredoka', 'cursive', 'sans-serif'],
-            sans: ['Plus Jakarta Sans', 'sans-serif']
-          }
-        }
-      }
-    }
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TK Bustanul Athfal 'Aisyiyah Pacitan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="images/logo.png">
+<!-- Status Intro Logo: dicek lebih awal agar tidak ada kedipan. Paksa tampil lagi: tambahkan ?intro=1 di alamat -->
+<script>
+(function(){
+  var r=document.documentElement,seen=false,force=/[?&]intro=1(&|$)/.test(location.search),skip=/[?&]intro=0(&|$)/.test(location.search);
+  try{seen=sessionStorage.getItem('baIntroSeen')==='1'}catch(e){}
+  if(!skip&&(force||!seen))r.classList.add('intro-active');
+})();
+</script>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="extras.css">
 </head>
-<body class="bg-slate-100 text-slate-800 antialiased font-sans flex h-screen overflow-hidden">
+<body>
 
-  <!-- Toast Notification Container -->
-  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+<!-- Sprite Ikon SVG -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-menu" viewBox="0 0 24 24"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+<symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></symbol>
+<symbol id="i-mosque" viewBox="0 0 24 24"><path d="M12 2v2"/><path d="M7 14a5 5 0 0 1 10 0"/><path d="M5 21v-7h14v7"/><path d="M10 21v-3a2 2 0 0 1 4 0v3"/><path d="M2 21V10l1.5-3L5 10v4"/><path d="M22 21V10l-1.5-3L19 10v4"/><path d="M2 21h20"/></symbol>
+<symbol id="i-palette" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
+<symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+<symbol id="i-message" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+<symbol id="i-shapes" viewBox="0 0 24 24"><path d="M8.3 10a.7.7 0 0 1-.626-1.079L11.4 3a.7.7 0 0 1 1.198-.043L16.3 8.9a.7.7 0 0 1-.572 1.1Z"/><rect x="3" y="14" width="7" height="7" rx="1"/><circle cx="17.5" cy="17.5" r="3.5"/></symbol>
+<symbol id="i-tree" viewBox="0 0 24 24"><path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"/><path d="M12 22v-3"/></symbol>
+<symbol id="i-steth" viewBox="0 0 24 24"><path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></symbol>
+<symbol id="i-grad" viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></symbol>
+<symbol id="i-bus" viewBox="0 0 24 24"><path d="M8 6v6"/><path d="M15 6v6"/><path d="M2 12h19.6"/><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3"/><circle cx="7" cy="18" r="2"/><path d="M9 18h5"/><circle cx="16" cy="18" r="2"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
+<symbol id="i-school" viewBox="0 0 24 24"><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M18 5v16"/><path d="m4 6 7.106-3.79a2 2 0 0 1 1.788 0L20 6"/><path d="m6 11-3.52 2.147a1 1 0 0 0-.48.854V19a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a1 1 0 0 0-.48-.853L18 11"/><path d="M6 5v16"/><circle cx="12" cy="9" r="2"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="i-facebook" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
+<symbol id="i-instagram" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></symbol>
+<symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+<symbol id="i-youtube" viewBox="0 0 24 24"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><polygon points="10 15 15 12 10 9 10 15"/></symbol>
+</defs></svg>
 
-  <!-- Mobile Sidebar Backdrop -->
-  <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 hidden lg:hidden"></div>
+<!-- Opening Screen Logo -->
+<div class="intro" id="intro" aria-label="Memuat TK Bustanul Athfal 'Aisyiyah Pacitan">
+  <div class="intro-inner">
+    <img class="intro-logo" id="introLogo" src="images/logo.png" alt="Logo TK Bustanul Athfal 'Aisyiyah Pacitan">
+    <span class="intro-line"></span>
+    <p class="intro-name">TK Bustanul Athfal 'Aisyiyah Pacitan</p>
+    <p class="intro-sub">Pendidikan Anak Usia Dini</p>
+  </div>
+  <button type="button" class="intro-skip" id="introSkip">Lewati</button>
+</div>
 
-  <!-- ==================== SIDEBAR ==================== -->
-  <aside id="admin-sidebar" class="fixed inset-y-0 left-0 z-40 w-72 bg-white border-r border-slate-200/80 flex flex-col justify-between transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 lg:static shrink-0">
+<!-- ==========================================
+     1. NAVBAR HIJAU
+========================================== -->
+<header class="header">
+  <div class="wrap nav">
+    <a href="#home" class="brand">
+      <img src="images/logo.png" alt="Logo" class="logo">
+      <span>
+        <small>Pendidikan Anak Usia Dini</small>
+        <strong>TK BUSTANUL ATHFAL 'AISYIYAH PACITAN</strong>
+      </span>
+    </a>
+    <button class="burger" id="burger" aria-label="Buka menu" aria-expanded="false">
+      <svg class="i i-menu" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg>
+      <svg class="i i-x" aria-hidden="true" focusable="false"><use href="#i-x"/></svg>
+    </button>
+    <nav id="menu" class="menu">
+      <a href="#home">Home</a>
+      <div class="has-sub">
+        <a href="#profil">Profil</a>
+        <div class="sub">
+          <a href="#profil">Sambutan</a>
+          <a href="#sejarah">Sejarah</a>
+          <a href="#visi">Visi &amp; Misi</a>
+          <a href="#guru">Guru &amp; Staf</a>
+        </div>
+      </div>
+      <a href="#program">Program</a>
+      <a href="#galeri">Galeri</a>
+      <a href="#ppdb">PPDB</a>
+      <a href="#kontak">Kontak</a>
+      <a href="#ppdb" class="btn-nav-daftar">Daftar Sekarang</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ==========================================
+       2. HERO BESAR DENGAN FOTO, JUDUL & SLIDER TITIK
+  ========================================== -->
+  <section class="hero-section">
+    <div class="wrap">
+      <div id="home" class="hero-card">
+        <div class="hero-slides" aria-hidden="true">
+          <div class="hs active" style="background-image:url('images/slide1.jpeg')"></div>
+          <div class="hs" style="background-image:url('images/slide2.jpeg')"></div>
+          <div class="hs" style="background-image:url('images/slide3.jpeg')"></div>
+          <div class="hs" style="background-image:url('images/slide4.jpeg')"></div>
+        </div>
+        <div class="hero-content">
+          <h1>MEMBENTUK GENERASI<br>CERDAS &amp; BERAKHLAK</h1>
+          <p class="lead-l">Pendidikan anak usia dini yang menumbuhkan generasi berakhlak, mandiri, cerdas, kreatif, dan ceria melalui metode belajar sambil bermain.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       3. SAMBUTAN KEPALA SEKOLAH
+  ========================================== -->
+  <section id="profil" class="sec">
+    <div class="wrap">
+      <div class="sambutan-grid">
+        <div class="kepala-box">
+          <div class="guru-frame kepala-frame">
+            <div class="guru-photo">
+              <img src="" alt="Kepala Sekolah TK Bustanul Athfal" onerror="this.src=''">
+            </div>
+          </div>
+          <span class="kepala-badge">Nama Kepala sekolah</span>
+        </div>
+        <div class="sambutan-text">
+          <h2>Sambutan <span>Kepala Sekolah</span></h2>
+          <p>Pendidikan anak usia dini merupakan fondasi penting dalam perjalanan hidup anak. Di TK Bustanul Athfal, kami berkomitmen menciptakan lingkungan belajar yang aman, menyenangkan, dan penuh kasih sayang. Kami percaya bahwa setiap anak memiliki potensi unik yang patut dikembangkan. Melalui metode saintifik serta Learning Through Play, kami menanamkan nilai-nilai keagamaan, kemandirian anak sejak dini agar mereka siap melangkah ke masa depan dengan percaya diri.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       4. SEJARAH SINGKAT
+  ========================================== -->
+  <section id="sejarah" class="sec">
+    <div class="wrap">
+      <div class="badge-pill badge-orange">Sejarah Singkat</div>
+      <div class="sejarah-timeline">
+        <article class="sj-item">
+          <span class="sj-year">1917</span>
+          <div class="sj-box">
+            <h3>Berdirinya ‘Aisyiyah</h3>
+            <p>Gerakan Bustanul Athfal bermula dari ‘Aisyiyah, organisasi perempuan Muhammadiyah yang berdiri pada tahun 1917.</p>
+          </div>
+        </article>
+        <article class="sj-item">
+          <span class="sj-year">1919</span>
+          <div class="sj-box">
+            <h3>Pendidikan Anak Usia Dini Pertama</h3>
+            <p>‘Aisyiyah membuka pendidikan anak usia dini yang saat itu bernama Frobel, dikenal sebagai taman kanak-kanak pertama yang didirikan bangsa Indonesia.</p>
+          </div>
+        </article>
+        <article class="sj-item">
+          <span class="sj-year">1973</span>
+          <div class="sj-box">
+            <h3>Nama Diseragamkan &amp; Berdirinya TK Pacitan</h3>
+            <p>Nama lembaga diseragamkan menjadi TK ‘Aisyiyah Bustanul Athfal. Pada 13 Maret 1973, TK Bustanul Athfal ‘Aisyiyah Pacitan berdiri, dirintis oleh para pengurus awal ‘Aisyiyah Pacitan di bawah naungan Pimpinan Daerah ‘Aisyiyah Kabupaten Pacitan.</p>
+          </div>
+        </article>
+        <article class="sj-item">
+          <span class="sj-year">Now</span>
+          <div class="sj-box">
+            <h3>Program Madrasah Unggul</h3>
+            <p>Kegiatan belajar berlangsung di dua gedung, yaitu Jl. H. Samanhudi No.05 dan Jl. K.H. Dimyati No.19, Pacitan, dengan Program Madrasah Unggul: Unggul Religius, Unggul Kreatifitas, dan Unggul Genius. Bersama para pendidik dan orang tua, sekolah berkomitmen mewujudkan generasi yang berakhlak mulia, sehat, mandiri, cerdas, dan kreatif.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       5. TIGA KOTAK INFO
+  ========================================== -->
+  <section id="info" class="sec">
+    <div class="wrap">
+      <div class="info-grid">
+        <!-- Kolom 1 & 2 dalam satu pembungkus dengan bar di bawahnya -->
+        <div class="info-col-1-2">
+          <div class="info-subgrid">
+            <div class="info-item">
+              <div class="info-header">Berdiri Sejak</div>
+              <div class="info-body info-body-year">
+                <strong>13 Maret</strong>
+                <span>1973</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-header">Gedung Pembelajaran</div>
+              <div class="info-body info-body-gedung">
+                <strong>Gedung 1</strong>
+                <small>Jl. H. Samanhudi No.05 Pacitan</small>
+                <strong>Gedung 2</strong>
+                <small>Jl. K.H. Dimyati No.19 Pacitan</small>
+              </div>
+            </div>
+          </div>
+          <div class="info-bottom-bar">TK Bustanul 'Athfal Aisyiyah</div>
+        </div>
+
+        <!-- Kolom 3: Program Unggulan Madrasah -->
+        <div class="info-col3" id="program">
+          <div class="info-header">Program Unggulan Madrasah</div>
+          <div class="info-body-col3">
+            <p><strong>- Penguatan Karakter</strong><br>Islam &amp; Keislaman/Kemuhammadiyahan</p>
+            <p><strong>- Pembelajaran Holistik Berbasis "Merdeka Bermain"</strong><br>(Learning through Play)</p>
+            <p><strong>- Kemandirian, Seni, dan Bakat Anak</strong><br>(Life Skills &amp; Talents)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       6. RANGKAIAN PRESTASI
+  ========================================== -->
+  <section id="prestasi" class="sec">
+    <div class="wrap">
+      <div class="prestasi-box">
+        <div class="prestasi-content">
+          <div class="badge-pill badge-orange">Rangkaian Prestasi :</div>
+          <ul class="prestasi-list">
+            <li>Juara 1 Tingkat Kabupaten Lomba Inovasi Guru Tingkat TK/RA/BA se-Kabupaten Pacitan</li>
+            <li>Memperoleh 27 medali emas dalam kompetisi marching band se-Jawa Timur</li>
+            <li>Peringkat 2 Lomba Lingkungan Sekolah Sehat jenjang TK/RA se-Kabupaten Pacitan Tahun 2024</li>
+            <li>Juara Harapan 1 Lomba Video Profil PAUD Tingkat Jawa Timur diselenggarakan oleh BGP Jatim</li>
+            <li>Penghargaan 100 besar PAUD Inovatif se-Indonesia dalam rangka Jambore Guru Hebat Tahun 2024</li>
+            <li>Juara 1 Lomba Fashion Show Kategori TK &amp; Juara 1 Lomba Carnival Kategori Umum</li>
+            <li>Juara 1 Lomba Tahfidz Online Tingkat Anak</li>
+          </ul>
+        </div>
+        <div class="prestasi-photo">
+          <img src="images/anak-prestasi.png" alt="Siswa Berprestasi" onerror="this.style.display='none'">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       7. VISI DAN MISI
+  ========================================== -->
+  <section id="visi" class="sec">
+    <div class="wrap">
+      <div class="visi-misi-grid">
+        <div class="visi-card">
+          <h3 class="card-title-teal">VISI</h3>
+          <p class="visi-text">Mewujudkan generasi yang berakhlak mulia, sehat, mandiri, cerdas dan kreatif.</p>
+        </div>
+        <div class="misi-card">
+          <h3 class="card-title-teal">MISI</h3>
+          <ul class="misi-list">
+            <li>Membiasakan perilaku islami dalam kehidupan sehari-hari</li>
+            <li>Membiasakan hidup sehat</li>
+            <li>Mengembangkan kemandirian anak melalui kegiatan life skill</li>
+            <li>Melatih dan mengembangkan kecerdasan anak dalam berpikir kritis</li>
+            <li>Menerapkan pembelajaran berbasis IT</li>
+            <li>Menyelenggarakan pembelajaran kreatif dan menyenangkan</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       8. SASARAN KUALITAS DAN AGENDA RUTIN
+  ========================================== -->
+  <section id="sasaran" class="sec">
+    <div class="wrap">
+      <!-- Kartu Sasaran Kualitas -->
+      <div class="sasaran-card">
+        <div class="badge-pill badge-orange">SASARAN KUALITAS</div>
+        <ul class="two-cols-list">
+          <li>Siap bersekolah</li>
+          <li>Terbiasa dengan ibadah dan doa sehari-hari</li>
+          <li>Mengenal Allah dan Rasul-Nya</li>
+          <li>Mengenal dasar-dasar literasi dan numerasi</li>
+          <li>Pembiasaan akhlak islami</li>
+          <li>Tuntas perkembangan anak sesuai usianya</li>
+          <li>Mengenal bakti terhadap orang tua</li>
+          <li>Terbiasa dengan kalimat thoyibah</li>
+        </ul>
+      </div>
+
+      <!-- Kartu Agenda Rutin -->
+      <div class="agenda-card" id="agenda">
+        <div class="badge-pill badge-teal">AGENDA RUTIN</div>
+        <ul class="two-cols-list">
+          <li>Mengaji dan Hafalan</li>
+          <li>Outing Class sesuai tema/topik</li>
+          <li>Pentas seni dan pameran karya</li>
+          <li>Pemeriksaan Kesehatan dan Deteksi Dini (DDTK)</li>
+          <li>Projek Standar Kecakapan Ubudiah dan Akhlakul Karimah (SKUA)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION: PROFIL GURU & STAF
+  ========================================== -->
+  <section id="guru" class="sec">
+    <div class="wrap">
+      <h2 class="sr-only">Profil Guru dan Staf</h2>
+      <div class="badge-pill badge-teal">GURU &amp; STAF</div>
+      <p class="guru-intro">Tim pendidik kami siap mendampingi tumbuh kembang setiap anak dengan penuh kasih sayang.</p>
+
+      <div class="guru-grid">
+        <!-- Kartu 1 -->
+        <article class="guru-card">
+          <div class="guru-frame">
+            <div class="guru-photo">
+              <span class="guru-placeholder" aria-hidden="true">
+                <svg class="i guru-placeholder-ico" focusable="false"><use href="#i-user"/></svg>
+              </span>
+              <img src="images/guru-1.jpg" alt="Foto [Nama Guru 1], Guru Kelas A" loading="lazy" onload="this.parentElement.classList.add('has-photo')" onerror="this.remove()">
+            </div>
+          </div>
+          <h3 class="guru-nama">[Nama Guru 1]</h3>
+          <span class="guru-jabatan">Guru Kelas A</span>
+        </article>
+
+        <!-- Kartu 2 -->
+        <article class="guru-card">
+          <div class="guru-frame">
+            <div class="guru-photo">
+              <span class="guru-placeholder" aria-hidden="true">
+                <svg class="i guru-placeholder-ico" focusable="false"><use href="#i-user"/></svg>
+              </span>
+              <img src="images/guru-2.jpg" alt="Foto [Nama Guru 2], Guru Kelas B" loading="lazy" onload="this.parentElement.classList.add('has-photo')" onerror="this.remove()">
+            </div>
+          </div>
+          <h3 class="guru-nama">[Nama Guru 2]</h3>
+          <span class="guru-jabatan">Guru Kelas B</span>
+        </article>
+
+        <!-- Kartu 3 -->
+        <article class="guru-card">
+          <div class="guru-frame">
+            <div class="guru-photo">
+              <span class="guru-placeholder" aria-hidden="true">
+                <svg class="i guru-placeholder-ico" focusable="false"><use href="#i-user"/></svg>
+              </span>
+              <img src="images/guru-3.jpg" alt="Foto [Nama Guru 3], Guru Kelompok Bermain" loading="lazy" onload="this.parentElement.classList.add('has-photo')" onerror="this.remove()">
+            </div>
+          </div>
+          <h3 class="guru-nama">[Nama Guru 3]</h3>
+          <span class="guru-jabatan">Guru Kelompok Bermain</span>
+        </article>
+
+        <!-- Kartu 4 -->
+        <article class="guru-card">
+          <div class="guru-frame">
+            <div class="guru-photo">
+              <span class="guru-placeholder" aria-hidden="true">
+                <svg class="i guru-placeholder-ico" focusable="false"><use href="#i-user"/></svg>
+              </span>
+              <img src="images/guru-4.jpg" alt="Foto [Nama Guru 4], Guru Pendamping" loading="lazy" onload="this.parentElement.classList.add('has-photo')" onerror="this.remove()">
+            </div>
+          </div>
+          <h3 class="guru-nama">[Nama Guru 4]</h3>
+          <span class="guru-jabatan">Guru Pendamping</span>
+        </article>
+
+        <!-- Kartu 5 -->
+        <article class="guru-card">
+          <div class="guru-frame">
+            <div class="guru-photo">
+              <span class="guru-placeholder" aria-hidden="true">
+                <svg class="i guru-placeholder-ico" focusable="false"><use href="#i-user"/></svg>
+              </span>
+              <img src="images/guru-5.jpg" alt="Foto [Nama Guru 5], Guru Pendamping" loading="lazy" onload="this.parentElement.classList.add('has-photo')" onerror="this.remove()">
+            </div>
+          </div>
+          <h3 class="guru-nama">[Nama Guru 5]</h3>
+          <span class="guru-jabatan">Guru Pendamping</span>
+        </article>
+
+        <!-- Kartu 6 -->
+        <article class="guru-card">
+          <div class="guru-frame">
+            <div class="guru-photo">
+              <span class="guru-placeholder" aria-hidden="true">
+                <svg class="i guru-placeholder-ico" focusable="false"><use href="#i-user"/></svg>
+              </span>
+              <img src="images/guru-6.jpg" alt="Foto [Nama Guru 6], Guru Al-Qur'an &amp; Karakter" loading="lazy" onload="this.parentElement.classList.add('has-photo')" onerror="this.remove()">
+            </div>
+          </div>
+          <h3 class="guru-nama">[Nama Guru 6]</h3>
+          <span class="guru-jabatan">Guru Al-Qur'an &amp; Karakter</span>
+        </article>
+
+        <!-- Kartu 7 -->
+        <article class="guru-card">
+          <div class="guru-frame">
+            <div class="guru-photo">
+              <span class="guru-placeholder" aria-hidden="true">
+                <svg class="i guru-placeholder-ico" focusable="false"><use href="#i-user"/></svg>
+              </span>
+              <img src="images/guru-7.jpg" alt="Foto [Nama Guru 7], Staf Tata Usaha" loading="lazy" onload="this.parentElement.classList.add('has-photo')" onerror="this.remove()">
+            </div>
+          </div>
+          <h3 class="guru-nama">[Nama Guru 7]</h3>
+          <span class="guru-jabatan">Staf Tata Usaha</span>
+        </article>
+
+        <!-- Kartu 8 -->
+        <article class="guru-card">
+          <div class="guru-frame">
+            <div class="guru-photo">
+              <span class="guru-placeholder" aria-hidden="true">
+                <svg class="i guru-placeholder-ico" focusable="false"><use href="#i-user"/></svg>
+              </span>
+              <img src="images/guru-8.jpg" alt="Foto [Nama Guru 8], Penjaga Sekolah" loading="lazy" onload="this.parentElement.classList.add('has-photo')" onerror="this.remove()">
+            </div>
+          </div>
+          <h3 class="guru-nama">[Nama Guru 8]</h3>
+          <span class="guru-jabatan">Penjaga Sekolah</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       9. INFORMASI AKADEMIK (TABEL)
+  ========================================== -->
+  <section id="akademik" class="sec">
+    <div class="wrap">
+      <div class="badge-pill badge-orange">INFORMASI AKADEMIK</div>
+      <div class="akademik-table-wrap">
+        <table class="akademik-table">
+          <thead>
+            <tr>
+              <th>WAKTU</th>
+              <th>KEGIATAN</th>
+              <th>KETERANGAN</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>07.00 – 07.30</td>
+              <td>Kedatangan &amp; pembiasaan</td>
+              <td>Menyambut anak, pembiasaan senyum salam sapa, dan doa pagi</td>
+            </tr>
+            <tr>
+              <td>07.30 – 09.00</td>
+              <td>Kegiatan pembelajaran</td>
+              <td>Sentra / area bermain edukatif &amp; pembelajaran aktif</td>
+            </tr>
+            <tr>
+              <td>09.00 – 09.30</td>
+              <td>Istirahat &amp; makan bersama</td>
+              <td>Cuci tangan, makan bekal sehat bersama, &amp; bermain bebas</td>
+            </tr>
+            <tr>
+              <td>09.30 – 10.00</td>
+              <td>Penutup &amp; doa pulang</td>
+              <td>Evaluasi kegiatan harian, bernyanyi, doa, &amp; penjemputan</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       10. GALERI KEGIATAN (GRID 3 KOLOM)
+  ========================================== -->
+  <section id="galeri" class="sec">
+    <div class="wrap">
+      <div class="badge-pill badge-orange">GALERI KEGIATAN</div>
+      <div class="galeri-grid">
+        <button type="button" class="g g1" aria-label="Perbesar foto: Kegiatan belajar">
+          <img src="images/galeri-1.jpg" alt="Kegiatan belajar" loading="lazy" onload="this.parentElement.classList.add('has-photo')" onerror="this.remove()">
+          <span class="g-ico"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-grad"/></svg></span>
+          <span class="g-cap">Kegiatan Belajar</span>
+        </button>
+        <button type="button" class="g g2" aria-label="Perbesar foto: Kreasi seni">
+          <img src="images/galeri-2.jpg" alt="Kreasi seni" loading="lazy" onload="this.parentElement.classList.add('has-photo')" onerror="this.remove()">
+          <span class="g-ico"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-palette"/></svg></span>
+          <span class="g-cap">Kreasi Seni</span>
+        </button>
+        <button type="button" class="g g3" aria-label="Perbesar foto: Mengaji dan hafalan">
+          <img src="images/galeri-3.jpg" alt="Mengaji dan hafalan" loading="lazy" onload="this.parentElement.classList.add('has-photo')" onerror="this.remove()">
+          <span class="g-ico"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"/></svg></span>
+          <span class="g-cap">Mengaji &amp; Hafalan</span>
+        </button>
+        <button type="button" class="g g4" aria-label="Perbesar foto: Pentas seni">
+          <img src="images/galeri-4.jpg" alt="Pentas seni" loading="lazy" onload="this.parentElement.classList.add('has-photo')" onerror="this.remove()">
+          <span class="g-ico"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mic"/></svg></span>
+          <span class="g-cap">Pentas Seni</span>
+        </button>
+        <button type="button" class="g g5" aria-label="Perbesar foto: Outing class">
+          <img src="images/galeri-5.jpg" alt="Outing class" loading="lazy" onload="this.parentElement.classList.add('has-photo')" onerror="this.remove()">
+          <span class="g-ico"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bus"/></svg></span>
+          <span class="g-cap">Outing Class</span>
+        </button>
+        <button type="button" class="g g6" aria-label="Perbesar foto: Lomba dan prestasi">
+          <img src="images/galeri-6.jpg" alt="Lomba dan prestasi" loading="lazy" onload="this.parentElement.classList.add('has-photo')" onerror="this.remove()">
+          <span class="g-ico"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-trophy"/></svg></span>
+          <span class="g-cap">Lomba &amp; Prestasi</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       11. TESTIMONI ORANG TUA
+  ========================================== -->
+  <section id="testimoni" class="sec">
+    <div class="wrap">
+      <div class="badge-pill badge-orange">TESTIMONI ORANG TUA</div>
+      <div class="testimoni-list">
+        <blockquote class="testimoni-card">
+          <p>"Alhamdulillah, anak saya sangat senang dan antusias bersekolah di TK 'Aisyiyah. Guru-gurunya sangat sabar, ramah, dan telaten membimbing anak-anak."</p>
+          <cite>— Bunda Alvaro (Kelompok B)</cite>
+        </blockquote>
+        <blockquote class="testimoni-card">
+          <p>"Metode belajarnya sangat menyenangkan dan menumbuhkan rasa percaya diri anak. Pembiasaan sholat dan doa hariannya terbawa sampai di rumah."</p>
+          <cite>— Ayah Rayyan (Kelompok A)</cite>
+        </blockquote>
+        <blockquote class="testimoni-card">
+          <p>"Fasilitas sekolah lengkap dan lingkungannya sangat aman serta nyaman. Anak saya jadi lebih mandiri, kreatif, dan berakhlak baik."</p>
+          <cite>— Bunda Zaskia (Kelompok Bermain)</cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       12. LOKASI (PETA + TOMBOL LINK PENDAFTARAN)
+  ========================================== -->
+  <section id="lokasi" class="sec">
+    <div class="wrap">
+      <div class="lokasi-box">
+        <div class="lokasi-map">
+          <iframe title="Peta Lokasi TK 'Aisyiyah Pacitan" loading="lazy" src="https://maps.google.com/maps?q=TK+Bustanul+Athfal+Aisyiyah+Pacitan&hl=id&z=16&output=embed"></iframe>
+        </div>
+        <div class="lokasi-info">
+          <h3>Lokasi Kami</h3>
+          <p>
+            <strong>Gedung 1:</strong> Jl. H. Samanhudi No.05, Pacitan.<br>
+            <strong>Gedung 2:</strong> Jl. K.H. Dimyati No.19, Pacitan.
+          </p>
+          <a class="btn-pendaftaran" href="#ppdb">LINK PENDAFTARAN</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ==========================================
+     13. FOOTER HIJAU
+========================================== -->
+<footer id="kontak" class="footer-teal">
+  <div class="wrap">
+    <div class="footer-brand">
+      <img src="images/logo.png" alt="Logo">
+      <span>TK BUSTANUL ATHFAL 'AISYIYAH PACITAN</span>
+    </div>
+    <div class="footer-socials">
+      <a href="https://www.facebook.com/profile.php?id=100068854965582" target="_blank" rel="noopener" class="soc-btn" aria-label="Facebook"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-facebook"/></svg></a>
+      <a href="https://instagram.com/bustanul_athfal_aisyiyah" target="_blank" rel="noopener" class="soc-btn" aria-label="Instagram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-instagram"/></svg></a>
+      <a href="https://wa.me/+6285648409001" target="_blank" rel="noopener" class="soc-btn" aria-label="WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg></a>
+      <a href="https://www.youtube.com/@baaisyiyahpacitan644" target="_blank" rel="noopener" class="soc-btn" aria-label="YouTube"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-youtube"/></svg></a>
+    </div>
+    <p class="footer-copy">© <span id="year"></span> TK Bustanul Athfal 'Aisyiyah Pacitan. Hak cipta dilindungi.</p>
+  </div>
+</footer>
+
+<!-- PPDB MODAL POPUP (Mempertahankan fungsi form JavaScript & WhatsApp) -->
+<div id="ppdb" class="modal-overlay">
+  <div class="modal-content">
+    <a href="#close-modal" class="modal-close" aria-label="Tutup formulir">&times;</a>
+    <h3 style="color:var(--teal);font-size:1.4rem;font-weight:900;margin-bottom:12px">Formulir Pendaftaran PPDB</h3>
+    <p style="font-size:0.9rem;color:var(--ink-soft);margin-bottom:18px">Isi formulir di bawah ini untuk pendaftaran langsung via WhatsApp atau klik tombol pendaftaran resmi.</p>
     
-    <!-- Sidebar Header & Branding -->
-    <div>
-      <div class="h-20 px-6 flex items-center justify-between border-b border-slate-100">
-        <a href="admin.html" class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-500 text-white flex items-center justify-center text-xl shadow-md shadow-orange-500/20">
-            <i class="fa-solid fa-shapes"></i>
-          </div>
-          <div>
-            <h1 class="font-heading font-bold text-lg text-slate-800 leading-tight admin-school-name truncate max-w-[140px]">
-              TK Bustanul 'asiyiyah Pacitan
-            </h1>
-            <span class="text-[11px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md inline-block">
-              CMS Panel V1.0
-            </span>
-          </div>
-        </a>
-      </div>
-
-      <!-- Quick Action: Visit Website Button -->
-      <div class="px-5 pt-5 pb-2">
-        <a href="index.html" target="_blank" class="w-full py-2.5 px-3.5 rounded-xl bg-amber-50 hover:bg-amber-100/80 text-amber-900 font-bold text-xs flex items-center justify-between transition border border-amber-200/60 shadow-sm">
-          <span class="flex items-center gap-2">
-            <i class="fa-solid fa-arrow-up-right-from-square text-amber-600"></i>
-            <span>Lihat Website Utama</span>
-          </span>
-          <span class="text-[10px] bg-amber-200/80 text-amber-800 px-1.5 py-0.5 rounded font-extrabold uppercase">Live</span>
-        </a>
-      </div>
-
-      <!-- Nav Menu Items -->
-      <nav class="px-4 py-3 space-y-1.5 overflow-y-auto max-h-[calc(100vh-250px)]">
-        <p class="px-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Menu Utama</p>
-        
-        <!-- 1. Overview -->
-        <a href="#overview" data-tab="overview" class="nav-tab-btn flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition">
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-chart-pie text-base w-5 text-center"></i>
-            <span>Dashboard Overview</span>
-          </div>
-        </a>
-
-        <!-- 2. Profil Sekolah -->
-        <a href="#profile" data-tab="profile" class="nav-tab-btn flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition">
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-school text-base w-5 text-center"></i>
-            <span>Profil & Sambutan</span>
-          </div>
-        </a>
-
-        <!-- 3. Berita & Pengumuman -->
-        <a href="#articles" data-tab="articles" class="nav-tab-btn flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition">
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-newspaper text-base w-5 text-center"></i>
-            <span>Berita & Pengumuman</span>
-          </div>
-        </a>
-
-        <!-- 4. Galeri & Kegiatan -->
-        <a href="#gallery" data-tab="gallery" class="nav-tab-btn flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition">
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-images text-base w-5 text-center"></i>
-            <span>Galeri & Kegiatan</span>
-          </div>
-        </a>
-
-        <!-- 5. Guru & Staff -->
-        <a href="#teachers" data-tab="teachers" class="nav-tab-btn flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition">
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-chalkboard-user text-base w-5 text-center"></i>
-            <span>Guru & Tenaga Pendidik</span>
-          </div>
-        </a>
-
-        <!-- 6. PPDB Online -->
-        <a href="#ppdb" data-tab="ppdb" class="nav-tab-btn flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition">
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-id-card text-base w-5 text-center"></i>
-            <span>Data PPDB Online</span>
-          </div>
-          <span class="ppdb-pending-count hidden px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-500 text-white">0</span>
-        </a>
-
-        <p class="px-3 pt-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Tampilan & Pengaturan</p>
-
-        <!-- 7. Section Builder -->
-        <a href="#sections" data-tab="sections" class="nav-tab-btn flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition">
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-puzzle-piece text-base w-5 text-center"></i>
-            <span>Section / Widget Builder</span>
-          </div>
-          <span class="text-[9px] px-1.5 py-0.5 rounded bg-sky-100 text-sky-700 font-extrabold">BONUS</span>
-        </a>
-
-        <!-- 8. Inbox -->
-        <a href="#inbox" data-tab="inbox" class="nav-tab-btn flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition">
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-inbox text-base w-5 text-center"></i>
-            <span>Pesan Masuk (Inbox)</span>
-          </div>
-          <span class="inbox-unread-count hidden px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500 text-white">0</span>
-        </a>
-
-        <!-- 9. Settings / Backup -->
-        <a href="#settings" data-tab="settings" class="nav-tab-btn flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition">
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-database text-base w-5 text-center"></i>
-            <span>Cadangan & Reset DB</span>
-          </div>
-        </a>
-      </nav>
-    </div>
-
-    <!-- Sidebar Footer / Admin Identity -->
-    <div class="p-4 border-t border-slate-100 bg-slate-50">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full bg-amber-200 text-amber-800 flex items-center justify-center font-bold text-sm">
-          👩‍🏫
-        </div>
-        <div class="min-w-0 flex-1">
-          <h5 class="text-xs font-bold text-slate-800 truncate">Bunda Rahmawati</h5>
-          <p class="text-[11px] text-emerald-600 font-medium">● Super Administrator</p>
-        </div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- ==================== MAIN CONTENT AREA ==================== -->
-  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
-    
-    <!-- Top Bar -->
-    <header class="h-20 bg-white border-b border-slate-200/80 px-6 flex items-center justify-between shrink-0">
-      <div class="flex items-center gap-4">
-        <button id="mobile-sidebar-toggle" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100">
-          <i class="fa-solid fa-bars text-xl"></i>
-        </button>
-        <div>
-          <h2 id="admin-breadcrumb-title" class="font-heading font-bold text-xl text-slate-800">
-            Dashboard Overview
-          </h2>
-          <p class="text-xs text-slate-500">Panel Kontrol Pengelolaan Website Taman Kanak-Kanak</p>
-        </div>
-      </div>
-
-      <div class="flex items-center gap-3">
-        <!-- Live Preview pill button -->
-        <a href="index.html" target="_blank" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">
-          <i class="fa-solid fa-globe text-slate-500"></i>
-          <span>Buka Website</span>
-        </a>
-
-        <!-- System Online Badge -->
-        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>Sistem CMS Aktif</span>
-        </div>
-      </div>
-    </header>
-
-    <!-- Scrollable Workspace Body -->
-    <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
-
-      <!-- ==================== TAB 1: OVERVIEW ==================== -->
-      <section id="tab-overview" class="admin-tab-content space-y-8">
-        
-        <!-- Welcome Hero Banner -->
-        <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 text-white shadow-lg relative overflow-hidden">
-          <div class="relative z-10 max-w-2xl">
-            <span class="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-bold uppercase tracking-wider inline-block mb-3">
-              Selamat Datang Pengelola TK ✨
-            </span>
-            <h2 class="font-heading text-2xl sm:text-3xl font-bold leading-snug">
-              Kelola Seluruh Konten & Informasi <span id="overview-welcome-name">TK Bustanul 'asiyiyah Pacitan</span>
-            </h2>
-            <p class="text-white/90 text-sm mt-2 leading-relaxed">
-              Semua perubahan yang Anda buat di admin dashboard ini langsung tersimpan dan otomatis tampil di website publik tanpa perlu menyentuh baris kode.
-            </p>
-            <div class="flex flex-wrap items-center gap-3 mt-5">
-              <button onclick="openArticleModal()" class="px-4 py-2 rounded-xl bg-white text-slate-800 font-bold text-xs hover:bg-slate-100 transition shadow-sm flex items-center gap-2">
-                <i class="fa-solid fa-plus text-amber-500"></i>
-                <span>Tulis Berita / Pengumuman</span>
-              </button>
-              <button onclick="openGalleryModal()" class="px-4 py-2 rounded-xl bg-black/20 hover:bg-black/30 text-white font-bold text-xs transition flex items-center gap-2">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-                <span>Unggah Foto Galeri</span>
-              </button>
-              <a href="#ppdb" onclick="switchTab('ppdb')" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-amber-950 font-bold text-xs transition flex items-center gap-2">
-                <i class="fa-solid fa-list-check"></i>
-                <span>Cek Pendaftar PPDB</span>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- 4 Key Stat Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <!-- Card 1: PPDB -->
-          <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm bubbly-card">
-            <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl">
-                <i class="fa-solid fa-user-graduate"></i>
-              </div>
-              <span id="overview-pending-students" class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700">
-                0 Menunggu
-              </span>
-            </div>
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Calon Siswa (PPDB)</p>
-            <h3 id="overview-total-students" class="font-heading text-3xl font-bold text-slate-800 mt-1">0</h3>
-            <a href="#ppdb" onclick="switchTab('ppdb')" class="text-xs font-bold text-amber-600 hover:underline mt-3 inline-block">
-              Verifikasi Pendaftar →
-            </a>
-          </div>
-
-          <!-- Card 2: Gallery -->
-          <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm bubbly-card">
-            <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-xl">
-                <i class="fa-solid fa-photo-film"></i>
-              </div>
-              <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-sky-50 text-sky-700">
-                Dokumentasi
-              </span>
-            </div>
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Foto & Album</p>
-            <h3 id="overview-total-gallery" class="font-heading text-3xl font-bold text-slate-800 mt-1">0</h3>
-            <a href="#gallery" onclick="switchTab('gallery')" class="text-xs font-bold text-sky-600 hover:underline mt-3 inline-block">
-              Kelola Galeri →
-            </a>
-          </div>
-
-          <!-- Card 3: Articles -->
-          <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm bubbly-card">
-            <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl">
-                <i class="fa-solid fa-bullhorn"></i>
-              </div>
-              <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700">
-                Info Aktif
-              </span>
-            </div>
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Berita & Pengumuman</p>
-            <h3 id="overview-total-articles" class="font-heading text-3xl font-bold text-slate-800 mt-1">0</h3>
-            <a href="#articles" onclick="switchTab('articles')" class="text-xs font-bold text-emerald-600 hover:underline mt-3 inline-block">
-              Kelola Pengumuman →
-            </a>
-          </div>
-
-          <!-- Card 4: Inbox -->
-          <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm bubbly-card">
-            <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center text-xl">
-                <i class="fa-solid fa-comments"></i>
-              </div>
-              <span id="overview-unread-inbox" class="px-2.5 py-1 rounded-full text-xs font-bold bg-rose-50 text-rose-700">
-                0 Baru
-              </span>
-            </div>
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Pesan Masuk (Inbox)</p>
-            <h3 id="overview-total-inbox" class="font-heading text-3xl font-bold text-slate-800 mt-1">0</h3>
-            <a href="#inbox" onclick="switchTab('inbox')" class="text-xs font-bold text-rose-600 hover:underline mt-3 inline-block">
-              Buka Kotak Pesan →
-            </a>
-          </div>
-        </div>
-
-        <!-- 2 Column Overview Details -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          
-          <!-- Recent PPDB Registrations -->
-          <div class="lg:col-span-8 bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm">
-            <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-              <div>
-                <h3 class="font-heading font-bold text-lg text-slate-800">Pendaftaran PPDB Terbaru</h3>
-                <p class="text-xs text-slate-400">Calon siswa yang mendaftar secara mandiri melalui website</p>
-              </div>
-              <a href="#ppdb" onclick="switchTab('ppdb')" class="text-xs font-bold text-amber-600 hover:underline">
-                Lihat Semua PPDB →
-              </a>
-            </div>
-
-            <div class="overflow-x-auto">
-              <table class="w-full text-left">
-                <thead>
-                  <tr class="text-[11px] font-bold text-slate-400 uppercase border-b border-slate-100">
-                    <th class="pb-3 px-4">Calon Siswa</th>
-                    <th class="pb-3 px-4">Jenjang</th>
-                    <th class="pb-3 px-4">Orang Tua / Kontak</th>
-                    <th class="pb-3 px-4">Status</th>
-                    <th class="pb-3 px-4 text-right">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody id="overview-recent-ppdb-body">
-                  <!-- Populated dynamically -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Recent Articles & Quick Info -->
-          <div class="lg:col-span-4 space-y-6">
-            <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm">
-              <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
-                <h3 class="font-heading font-bold text-base text-slate-800">Berita Terakhir</h3>
-                <button onclick="openArticleModal()" class="text-xs font-bold text-amber-600 hover:underline">+ Baru</button>
-              </div>
-              <div id="overview-recent-articles" class="space-y-3">
-                <!-- Populated dynamically -->
-              </div>
-            </div>
-
-            <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6 rounded-3xl shadow-sm">
-              <div class="flex items-center gap-3 mb-3">
-                <div class="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center font-bold text-xs">
-                  💡
-                </div>
-                <h4 class="font-heading font-bold text-sm">Tips Pengelolaan</h4>
-              </div>
-              <p class="text-slate-300 text-xs leading-relaxed">
-                Anda dapat mengubah tata urutan dan mengaktifkan/menonaktifkan bagian website di menu <strong>Section Builder</strong> tanpa perlu koding.
-              </p>
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- ==================== TAB 2: PROFIL SEKOLAH ==================== -->
-      <section id="tab-profile" class="admin-tab-content hidden space-y-6">
-        
-        <form id="profile-form" onsubmit="handleSaveSchoolProfile(event)" class="space-y-6">
-          
-          <!-- Sambutan Kepala Sekolah -->
-          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-sm space-y-6">
-            <div class="flex items-center gap-3 border-b border-slate-100 pb-4">
-              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg">
-                <i class="fa-solid fa-comment-dots"></i>
-              </div>
-              <div>
-                <h3 class="font-heading font-bold text-xl text-slate-800">Sambutan Kepala Sekolah</h3>
-                <p class="text-xs text-slate-400">Pesan resmi dan foto kepala sekolah yang tampil di beranda</p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-              <!-- Foto Kepala Sekolah -->
-              <div class="md:col-span-4 text-center space-y-3">
-                <label class="block text-xs font-bold text-slate-700">Foto Kepala Sekolah</label>
-                <div class="w-40 h-40 mx-auto rounded-3xl overflow-hidden border-4 border-amber-300 bg-slate-100 shadow-md">
-                  <img id="profile-principalPhoto-preview" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-                </div>
-                <input type="hidden" id="profile-principalPhoto-hidden" value="">
-                
-                <div class="space-y-2">
-                  <input type="file" accept="image/*" class="img-file-input block w-full text-xs text-slate-500 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200 cursor-pointer" data-preview-id="profile-principalPhoto-preview" data-hidden-input-id="profile-principalPhoto-hidden">
-                  <input type="text" id="profile-principalPhoto-url" class="img-url-input w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="Atau tempel URL gambar..." data-preview-id="profile-principalPhoto-preview" data-hidden-input-id="profile-principalPhoto-hidden">
-                </div>
-              </div>
-
-              <!-- Identitas & Isi Sambutan -->
-              <div class="md:col-span-8 space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Nama Kepala Sekolah *</label>
-                    <input type="text" id="profile-principalName" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                  </div>
-                  <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Jabatan / Gelar</label>
-                    <input type="text" id="profile-principalTitle" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                  </div>
-                </div>
-
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1">Teks Sambutan Kepala Sekolah *</label>
-                  <textarea id="profile-principalSpeech" rows="6" required class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none leading-relaxed" placeholder="Tuliskan kata sambutan hangat untuk calon wali murid..."></textarea>
-                  <p class="text-[11px] text-slate-400 mt-1">Gunakan enter ganda untuk membuat paragraf baru.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Identitas Umum Sekolah -->
-          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-sm space-y-6">
-            <div class="flex items-center gap-3 border-b border-slate-100 pb-4">
-              <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-lg">
-                <i class="fa-solid fa-id-card-clip"></i>
-              </div>
-              <div>
-                <h3 class="font-heading font-bold text-xl text-slate-800">Identitas Lembaga</h3>
-                <p class="text-xs text-slate-400">Nama sekolah, akreditasi, NPSN dan slogan utama</p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Taman Kanak-Kanak *</label>
-                <input type="text" id="profile-name" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Akreditasi</label>
-                <input type="text" id="profile-accreditation" placeholder="Terakreditasi A (Unggul)" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">NPSN Sekolah</label>
-                <input type="text" id="profile-npsn" placeholder="69874512" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              </div>
-              <div class="sm:col-span-2">
-                <label class="block text-xs font-bold text-slate-700 mb-1">Slogan / Tagline Utama *</label>
-                <input type="text" id="profile-tagline" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Tahun Berdiri</label>
-                <input type="text" id="profile-foundedYear" placeholder="2014" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              </div>
-              <div class="sm:col-span-3">
-                <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Singkat / Sub-slogan</label>
-                <input type="text" id="profile-subtagline" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              </div>
-            </div>
-          </div>
-
-          <!-- Visi, Misi & Sejarah -->
-          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-sm space-y-6">
-            <div class="flex items-center gap-3 border-b border-slate-100 pb-4">
-              <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-lg">
-                <i class="fa-solid fa-compass"></i>
-              </div>
-              <div>
-                <h3 class="font-heading font-bold text-xl text-slate-800">Visi, Misi & Sejarah</h3>
-                <p class="text-xs text-slate-400">Pondasi filosofis dan rekam jejak sekolah</p>
-              </div>
-            </div>
-
-            <div class="space-y-4">
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Visi Sekolah *</label>
-                <textarea id="profile-vision" rows="3" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none leading-relaxed"></textarea>
-              </div>
-
-              <div>
-                <div class="flex items-center justify-between mb-2">
-                  <label class="block text-xs font-bold text-slate-700">Daftar Butir Misi Sekolah</label>
-                  <button type="button" onclick="addMissionRow()" class="px-3 py-1 rounded-lg bg-amber-100 text-amber-800 hover:bg-amber-200 text-xs font-bold transition flex items-center gap-1">
-                    <i class="fa-solid fa-plus text-[10px]"></i> Tambah Misi
-                  </button>
-                </div>
-                <div id="profile-missions-container" class="space-y-2.5">
-                  <!-- Dynamic missions -->
-                </div>
-              </div>
-
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Sejarah Singkat Sekolah</label>
-                <textarea id="profile-history" rows="4" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none leading-relaxed"></textarea>
-              </div>
-            </div>
-          </div>
-
-          <!-- Kontak, Alamat & Lokasi -->
-          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-sm space-y-6">
-            <div class="flex items-center gap-3 border-b border-slate-100 pb-4">
-              <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg">
-                <i class="fa-solid fa-map-location-dot"></i>
-              </div>
-              <div>
-                <h3 class="font-heading font-bold text-xl text-slate-800">Kontak, Alamat & Media Sosial</h3>
-                <p class="text-xs text-slate-400">Informasi saluran komunikasi resmi sekolah</p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Nomor Telepon Kantor *</label>
-                <input type="text" id="profile-phone" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp Official *</label>
-                <input type="text" id="profile-whatsapp" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Alamat Email *</label>
-                <input type="email" id="profile-email" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              </div>
-              <div class="sm:col-span-2">
-                <label class="block text-xs font-bold text-slate-700 mb-1">Alamat Fisik Kampus TK *</label>
-                <input type="text" id="profile-address" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Jam Operasional</label>
-                <input type="text" id="profile-operatingHours" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              </div>
-              <div class="sm:col-span-3">
-                <label class="block text-xs font-bold text-slate-700 mb-1">URL Google Maps Embed</label>
-                <input type="text" id="profile-mapsEmbedUrl" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="https://www.google.com/maps/embed?...">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Instagram URL</label>
-                <input type="text" id="profile-instagram" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Facebook URL</label>
-                <input type="text" id="profile-facebook" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">YouTube URL</label>
-                <input type="text" id="profile-youtube" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              </div>
-            </div>
-          </div>
-
-          <!-- Bottom Sticky Save Bar -->
-          <div class="p-4 bg-white rounded-2xl border border-slate-200/80 shadow-md flex items-center justify-between sticky bottom-4 z-20">
-            <span class="text-xs text-slate-500 flex items-center gap-1.5">
-              <i class="fa-solid fa-circle-info text-amber-500"></i>
-              Perubahan langsung tersimpan ke penyimpanan database lokal
-            </span>
-            <button type="submit" class="px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-xl shadow-md shadow-orange-500/20 text-sm transition transform hover:-translate-y-0.5 flex items-center gap-2">
-              <i class="fa-solid fa-floppy-disk"></i>
-              <span>Simpan Semua Perubahan Profil</span>
-            </button>
-          </div>
-
-        </form>
-
-      </section>
-
-      <!-- ==================== TAB 3: BERITA & PENGUMUMAN ==================== -->
-      <section id="tab-articles" class="admin-tab-content hidden space-y-6">
-        
-        <!-- Filter & Actions Bar -->
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div class="flex flex-wrap items-center gap-3 flex-1">
-            <div class="relative flex-1 min-w-[200px] max-w-sm">
-              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-              <input type="text" id="article-search-input" oninput="renderArticlesTab()" placeholder="Cari judul atau isi berita..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
-            </div>
-
-            <select id="article-filter-category" onchange="renderArticlesTab()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              <option value="all">Semua Kategori</option>
-              <option value="Pengumuman">Pengumuman</option>
-              <option value="Kegiatan">Kegiatan</option>
-              <option value="Prestasi">Prestasi</option>
-              <option value="Info Libur">Info Libur</option>
-            </select>
-
-            <select id="article-filter-status" onchange="renderArticlesTab()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              <option value="all">Semua Status</option>
-              <option value="published">Published</option>
-              <option value="draft">Draft</option>
-            </select>
-          </div>
-
-          <button onclick="openArticleModal()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold text-xs shadow-md shadow-orange-500/20 transition flex items-center gap-2 shrink-0">
-            <i class="fa-solid fa-plus"></i>
-            <span>Tambah Berita / Pengumuman</span>
-          </button>
-        </div>
-
-        <!-- Table Container -->
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left">
-              <thead>
-                <tr class="text-[11px] font-bold text-slate-400 uppercase bg-slate-50 border-b border-slate-100">
-                  <th class="py-3 px-4 w-20">Gambar</th>
-                  <th class="py-3 px-4">Judul & Ringkasan</th>
-                  <th class="py-3 px-4">Kategori</th>
-                  <th class="py-3 px-4">Tanggal / Penulis</th>
-                  <th class="py-3 px-4">Status</th>
-                  <th class="py-3 px-4 text-right">Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="articles-table-body">
-                <!-- Populated dynamically -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- ==================== TAB 4: GALERI & KEGIATAN ==================== -->
-      <section id="tab-gallery" class="admin-tab-content hidden space-y-6">
-        
-        <!-- Filter Bar -->
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div class="flex flex-wrap items-center gap-3 flex-1">
-            <div class="relative flex-1 min-w-[200px] max-w-sm">
-              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-              <input type="text" id="gallery-search-input" oninput="renderGalleryTab()" placeholder="Cari foto atau deskripsi kegiatan..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
-            </div>
-
-            <select id="gallery-filter-category" onchange="renderGalleryTab()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              <option value="all">Semua Album Kegiatan</option>
-              <option value="Belajar Mengajar">Belajar Mengajar</option>
-              <option value="Ekstrakurikuler">Ekstrakurikuler</option>
-              <option value="Fasilitas">Fasilitas Sekolah</option>
-              <option value="Pentas Seni & Wisuda">Pentas Seni & Wisuda</option>
-            </select>
-          </div>
-
-          <button onclick="openGalleryModal()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold text-xs shadow-md shadow-orange-500/20 transition flex items-center gap-2 shrink-0">
-            <i class="fa-solid fa-cloud-arrow-up"></i>
-            <span>Unggah Foto Baru</span>
-          </button>
-        </div>
-
-        <!-- Gallery Grid -->
-        <div id="gallery-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Populated dynamically -->
-        </div>
-
-      </section>
-
-      <!-- ==================== TAB 5: GURU & STAFF ==================== -->
-      <section id="tab-teachers" class="admin-tab-content hidden space-y-6">
-        
-        <!-- Filter Bar -->
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div class="relative flex-1 max-w-sm">
-            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-            <input type="text" id="teacher-search-input" oninput="renderTeachersTab()" placeholder="Cari nama guru, peran, atau pendidikan..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
-          </div>
-
-          <button onclick="openTeacherModal()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold text-xs shadow-md shadow-orange-500/20 transition flex items-center gap-2 shrink-0">
-            <i class="fa-solid fa-user-plus"></i>
-            <span>Tambah Guru / Staff</span>
-          </button>
-        </div>
-
-        <!-- Teacher Grid -->
-        <div id="teachers-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Populated dynamically -->
-        </div>
-
-      </section>
-
-      <!-- ==================== TAB 6: DATA PPDB ONLINE ==================== -->
-      <section id="tab-ppdb" class="admin-tab-content hidden space-y-6">
-        
-        <!-- Filter & Export Bar -->
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div class="flex flex-wrap items-center gap-3 flex-1">
-            <div class="relative flex-1 min-w-[200px] max-w-xs">
-              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-              <input type="text" id="ppdb-search-input" oninput="renderPPDBTab()" placeholder="Cari nama anak, orang tua, no reg..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
-            </div>
-
-            <select id="ppdb-filter-status" onchange="renderPPDBTab()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              <option value="all">Semua Status</option>
-              <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
-              <option value="Diterima">Diterima</option>
-              <option value="Cadangan">Cadangan</option>
-              <option value="Ditolak">Ditolak</option>
-            </select>
-
-            <select id="ppdb-filter-program" onchange="renderPPDBTab()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              <option value="all">Semua Jenjang</option>
-              <option value="Kelompok Bermain (3-4 Tahun)">Kelompok Bermain</option>
-              <option value="TK A (4-5 Tahun)">TK A</option>
-              <option value="TK B (5-6 Tahun)">TK B</option>
-            </select>
-
-            <span id="ppdb-filtered-count" class="text-xs font-bold text-slate-400 ml-auto lg:ml-0">
-              0 Calon Siswa
-            </span>
-          </div>
-
-          <div class="flex items-center gap-2 shrink-0">
-            <button onclick="printPPDBData()" class="px-3.5 py-2 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs transition flex items-center gap-1.5" title="Cetak Tabel">
-              <i class="fa-solid fa-print"></i>
-              <span>Cetak</span>
-            </button>
-            <button onclick="exportPPDBData()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition flex items-center gap-2 shadow-sm">
-              <i class="fa-solid fa-file-excel"></i>
-              <span>Ekspor ke Excel / CSV</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- PPDB Data Table -->
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left">
-              <thead>
-                <tr class="text-[11px] font-bold text-slate-400 uppercase bg-slate-50 border-b border-slate-100">
-                  <th class="py-3 px-4">No. Registrasi</th>
-                  <th class="py-3 px-4">Calon Siswa</th>
-                  <th class="py-3 px-4">Pilihan Jenjang</th>
-                  <th class="py-3 px-4">Orang Tua / Kontak</th>
-                  <th class="py-3 px-4">Tgl Daftar</th>
-                  <th class="py-3 px-4">Status</th>
-                  <th class="py-3 px-4 text-right">Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="ppdb-table-body">
-                <!-- Populated dynamically -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- ==================== TAB 7: SECTION BUILDER ==================== -->
-      <section id="tab-sections" class="admin-tab-content hidden space-y-6">
-        
-        <div class="bg-gradient-to-r from-sky-500 to-indigo-600 text-white p-6 sm:p-8 rounded-3xl shadow-sm">
-          <div class="max-w-2xl">
-            <span class="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-bold uppercase tracking-wider inline-block mb-2">
-              Dynamic Section / Widget Builder
-            </span>
-            <h3 class="font-heading font-bold text-2xl">Atur Urutan & Visibilitas Bagian Website</h3>
-            <p class="text-white/90 text-sm mt-1 leading-relaxed">
-              Anda dapat menyalakan/mematikan bagian tertentu (seperti Sambutan, Galeri, Guru) atau menaikkan/menurunkan posisinya di halaman utama website secara fleksibel.
-            </p>
-          </div>
-        </div>
-
-        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm">
-          <h4 class="font-heading font-bold text-lg text-slate-800 mb-4 pb-2 border-b border-slate-100">
-            Daftar Urutan Section Halaman Utama
-          </h4>
-          <div id="sections-builder-list" class="space-y-3">
-            <!-- Populated dynamically -->
-          </div>
-        </div>
-
-      </section>
-
-      <!-- ==================== TAB 8: INBOX ==================== -->
-      <section id="tab-inbox" class="admin-tab-content hidden space-y-6">
-        
-        <div class="flex items-center justify-between">
-          <div>
-            <h3 class="font-heading font-bold text-xl text-slate-800">Kotak Pesan Masuk (Inbox)</h3>
-            <p class="text-xs text-slate-500">Pesan dan pertanyaan yang dikirimkan oleh pengunjung melalui formulir website</p>
-          </div>
-        </div>
-
-        <div id="inbox-messages-list" class="space-y-4">
-          <!-- Populated dynamically -->
-        </div>
-
-      </section>
-
-      <!-- ==================== TAB 9: SETTINGS & BACKUP ==================== -->
-      <section id="tab-settings" class="admin-tab-content hidden space-y-6">
-        
-        <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-sm space-y-6">
-          <div class="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-lg">
-              <i class="fa-solid fa-shield-halved"></i>
-            </div>
-            <div>
-              <h3 class="font-heading font-bold text-xl text-slate-800">Cadangan Data (Backup & Restore)</h3>
-              <p class="text-xs text-slate-400">Amankan seluruh data sekolah ke berkas JSON di komputer Anda</p>
-            </div>
-          </div>
-
-          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs text-slate-600">
-            <span class="font-bold text-slate-800">Status Data Saat Ini:</span>
-            <span id="settings-stat-summary">Menghitung...</span>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Backup Box -->
-            <div class="p-6 rounded-2xl border border-slate-200 hover:border-amber-400 transition bg-white space-y-4">
-              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg">
-                <i class="fa-solid fa-download"></i>
-              </div>
-              <h4 class="font-heading font-bold text-base text-slate-800">Unduh Cadangan (Backup JSON)</h4>
-              <p class="text-xs text-slate-500 leading-relaxed">
-                Unduh salinan penuh seluruh profil sekolah, berita, galeri, data guru, pendaftar PPDB, dan pesan masuk ke dalam sebuah berkas JSON tunggal.
-              </p>
-              <button onclick="handleDownloadBackupJSON()" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center gap-2">
-                <i class="fa-solid fa-file-arrow-down"></i>
-                <span>Unduh File Cadangan JSON</span>
-              </button>
-            </div>
-
-            <!-- Restore Box -->
-            <div class="p-6 rounded-2xl border border-slate-200 hover:border-sky-400 transition bg-white space-y-4">
-              <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-lg">
-                <i class="fa-solid fa-upload"></i>
-              </div>
-              <h4 class="font-heading font-bold text-base text-slate-800">Pulihkan Cadangan (Restore)</h4>
-              <p class="text-xs text-slate-500 leading-relaxed">
-                Unggah berkas cadangan JSON yang pernah Anda simpan sebelumnya untuk mengembalikan seluruh konten website seketika.
-              </p>
-              <label class="inline-flex items-center gap-2 px-4 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl shadow-sm transition cursor-pointer">
-                <i class="fa-solid fa-file-import"></i>
-                <span>Pilih Berkas JSON untuk Dipulihkan</span>
-                <input type="file" accept=".json" onchange="handleRestoreBackupJSON(event)" class="hidden">
-              </label>
-            </div>
-          </div>
-
-          <!-- Danger Zone: Reset -->
-          <div class="pt-6 border-t border-rose-100">
-            <div class="p-5 rounded-2xl bg-rose-50 border border-rose-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <h5 class="font-bold text-rose-800 text-sm">Kembalikan ke Data Bawaan (Reset)</h5>
-                <p class="text-xs text-rose-600 mt-0.5">Semua data yang pernah Anda ubah akan dihapus dan digantikan data bawaan awal.</p>
-              </div>
-              <button onclick="handleResetDatabase()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl transition shrink-0">
-                Reset ke Data Awal
-              </button>
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-    </main>
-
+    <form id="form" class="form" novalidate>
+      <label>Nama lengkap anak
+        <input type="text" id="nama" placeholder="Contoh: Muhammad Farhan">
+        <em></em>
+      </label>
+      <label>Tanggal lahir anak
+        <input type="date" id="lahir">
+        <em></em>
+      </label>
+      <label>Program
+        <select id="program-pilih">
+          <option value="">Pilih program</option>
+          <option>Kelas Adaptasi (KB)</option>
+          <option>Kelompok A (Reguler)</option>
+          <option>Kelompok B (Reguler)</option>
+        </select>
+        <em></em>
+      </label>
+      <label>Nama orang tua / wali
+        <input type="text" id="ortu" placeholder="Nama ayah / ibu">
+        <em></em>
+      </label>
+      <label>Nomor WhatsApp
+        <input type="tel" id="hp" placeholder="Contoh: 00123456">
+        <em></em>
+      </label>
+      <button class="btn btn-form-gold" type="submit">Kirim via WhatsApp</button>
+      <a class="btn btn-form-link" href="https://clik.now/SPMBBAAPCT2627" target="_blank" rel="noopener">Buka Link Pendaftaran Resmi (Google Form)</a>
+      <p id="ok" class="ok" hidden></p>
+    </form>
   </div>
+</div>
 
-  <!-- ==================== MODALS ==================== -->
+<!-- Lightbox Galeri -->
+<div class="lightbox" id="lightbox" hidden>
+  <button id="close" aria-label="Tutup"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></button>
+  <div id="lb"></div>
+</div>
 
-  <!-- 1. Modal Berita / Pengumuman -->
-  <div id="article-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 relative">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
-        <h3 id="article-modal-header-title" class="font-heading font-bold text-xl text-slate-800">Tambah Berita Baru</h3>
-        <button onclick="closeArticleModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <form id="article-form" onsubmit="handleSaveArticle(event)" class="space-y-4">
-        <input type="hidden" id="article-id" value="">
-        
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Judul Berita / Pengumuman *</label>
-          <input type="text" id="article-title" required placeholder="Contoh: Jadwal Libur Semester Ganjil..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Kategori *</label>
-            <select id="article-category" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              <option value="Pengumuman">Pengumuman</option>
-              <option value="Kegiatan">Kegiatan</option>
-              <option value="Prestasi">Prestasi</option>
-              <option value="Info Libur">Info Libur</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal *</label>
-            <input type="date" id="article-date" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Status Publikasi *</label>
-            <select id="article-status" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              <option value="published">Published (Tayang)</option>
-              <option value="draft">Draft (Simpan Draf)</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Penulis / Sumber</label>
-          <input type="text" id="article-author" placeholder="Contoh: Bunda Dian (Wali Kelas)" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-        </div>
-
-        <!-- Thumbnail Upload / URL -->
-        <div class="space-y-2">
-          <label class="block text-xs font-bold text-slate-700">Gambar Sampul (Thumbnail)</label>
-          <div class="flex items-center gap-4">
-            <div class="w-20 h-16 rounded-xl overflow-hidden border border-slate-200 bg-slate-100 shrink-0">
-              <img id="article-thumbnail-preview" src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-            </div>
-            <div class="flex-1 space-y-1.5">
-              <input type="file" accept="image/*" class="img-file-input block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200 cursor-pointer" data-preview-id="article-thumbnail-preview" data-hidden-input-id="article-thumbnail-hidden">
-              <input type="text" id="article-thumbnail-url" class="img-url-input w-full px-3 py-1.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="Atau tempel URL gambar..." data-preview-id="article-thumbnail-preview" data-hidden-input-id="article-thumbnail-hidden">
-              <input type="hidden" id="article-thumbnail-hidden" value="">
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Ringkasan Singkat (Excerpt)</label>
-          <input type="text" id="article-excerpt" placeholder="Ringkasan satu kalimat yang menarik pembaca..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Isi Lengkap Berita / Pengumuman *</label>
-          <textarea id="article-content" rows="6" required placeholder="Tuliskan isi informasi secara lengkap di sini..." class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none leading-relaxed"></textarea>
-        </div>
-
-        <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
-          <button type="button" onclick="closeArticleModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-50 transition">
-            Batal
-          </button>
-          <button type="submit" class="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs shadow-md transition">
-            Simpan Berita
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- 2. Modal Galeri / Unggah Foto -->
-  <div id="gallery-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 relative">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
-        <h3 id="gallery-modal-header-title" class="font-heading font-bold text-xl text-slate-800">Unggah Foto Baru</h3>
-        <button onclick="closeGalleryModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <form id="gallery-form" onsubmit="handleSaveGallery(event)" class="space-y-4">
-        <input type="hidden" id="gallery-id" value="">
-
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Judul / Momen Kegiatan *</label>
-          <input type="text" id="gallery-title" required placeholder="Contoh: Pentas Seni Akhir Semester" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Album / Kategori *</label>
-            <select id="gallery-category" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              <option value="Belajar Mengajar">Belajar Mengajar</option>
-              <option value="Ekstrakurikuler">Ekstrakurikuler</option>
-              <option value="Fasilitas">Fasilitas</option>
-              <option value="Pentas Seni & Wisuda">Pentas Seni & Wisuda</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal Kegiatan</label>
-            <input type="date" id="gallery-date" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-          </div>
-        </div>
-
-        <!-- Foto Preview & Input -->
-        <div class="space-y-2">
-          <label class="block text-xs font-bold text-slate-700">Foto Kegiatan *</label>
-          <div class="h-44 rounded-2xl overflow-hidden border-2 border-dashed border-slate-300 bg-slate-50 flex items-center justify-center relative">
-            <img id="gallery-image-preview" src="https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
-          </div>
-          <input type="file" accept="image/*" class="img-file-input block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200 cursor-pointer" data-preview-id="gallery-image-preview" data-hidden-input-id="gallery-image-hidden">
-          <input type="text" id="gallery-image-url" class="img-url-input w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="Atau masukkan tautan URL gambar online..." data-preview-id="gallery-image-preview" data-hidden-input-id="gallery-image-hidden">
-          <input type="hidden" id="gallery-image-hidden" value="">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Keterangan / Cerita Foto</label>
-          <textarea id="gallery-desc" rows="3" placeholder="Ceritakan keseruan anak-anak pada foto ini..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
-        </div>
-
-        <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
-          <button type="button" onclick="closeGalleryModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-50 transition">
-            Batal
-          </button>
-          <button type="submit" class="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs shadow-md transition">
-            Simpan Foto
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- 3. Modal Guru & Tenaga Pendidik -->
-  <div id="teacher-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 relative">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
-        <h3 id="teacher-modal-header-title" class="font-heading font-bold text-xl text-slate-800">Tambah Guru Baru</h3>
-        <button onclick="closeTeacherModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <form id="teacher-form" onsubmit="handleSaveTeacher(event)" class="space-y-4">
-        <input type="hidden" id="teacher-id" value="">
-
-        <!-- Avatar preview -->
-        <div class="text-center space-y-2">
-          <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-amber-300 bg-slate-100 shadow-md">
-            <img id="teacher-photo-preview" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-          </div>
-          <input type="file" accept="image/*" class="img-file-input block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200 cursor-pointer" data-preview-id="teacher-photo-preview" data-hidden-input-id="teacher-photo-hidden">
-          <input type="text" id="teacher-photo-url" class="img-url-input w-full px-3 py-1.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="Atau tempel URL foto guru..." data-preview-id="teacher-photo-preview" data-hidden-input-id="teacher-photo-hidden">
-          <input type="hidden" id="teacher-photo-hidden" value="">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap & Gelar *</label>
-          <input type="text" id="teacher-name" required placeholder="Contoh: Dian Permata Sari, S.Pd." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Jabatan / Sentra Mengajar *</label>
-          <input type="text" id="teacher-role" required placeholder="Contoh: Wali Kelas TK B / Sentra Musik" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Pendidikan Terakhir</label>
-            <input type="text" id="teacher-education" placeholder="Contoh: S1 PGPAUD" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Status Kepegawaian</label>
-            <select id="teacher-status" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-              <option value="Aktif">Aktif</option>
-              <option value="Cuti">Cuti</option>
-              <option value="Non-aktif">Non-aktif</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Moto / Kutipan Semangat Mengajar</label>
-          <textarea id="teacher-quote" rows="2" placeholder="Kutipan kasih sayang bagi anak didik..." class="w-full px-4 py-2 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
-        </div>
-
-        <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
-          <button type="button" onclick="closeTeacherModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-50 transition">
-            Batal
-          </button>
-          <button type="submit" class="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs shadow-md transition">
-            Simpan Data Guru
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- 4. Modal Detail PPDB & Verifikasi Status -->
-  <div id="ppdb-detail-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 relative">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
-        <div>
-          <span id="ppdb-detail-regid" class="text-xs font-mono font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md">PPDB-2026-001</span>
-          <h3 class="font-heading font-bold text-xl text-slate-800 mt-1">Detail Calon Siswa & Verifikasi</h3>
-        </div>
-        <button onclick="closePPDBDetailModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <!-- Information Cards -->
-      <div class="space-y-6">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-100 text-xs">
-          <div>
-            <span class="text-slate-400 block font-semibold">Nama Lengkap Anak:</span>
-            <span id="ppdb-detail-childname" class="font-bold text-slate-800 text-sm"></span>
-          </div>
-          <div>
-            <span class="text-slate-400 block font-semibold">Nama Panggilan:</span>
-            <span id="ppdb-detail-nickname" class="font-bold text-slate-800 text-sm"></span>
-          </div>
-          <div>
-            <span class="text-slate-400 block font-semibold">Jenis Kelamin:</span>
-            <span id="ppdb-detail-gender" class="font-bold text-slate-800 text-sm"></span>
-          </div>
-          <div>
-            <span class="text-slate-400 block font-semibold">Tempat, Tanggal Lahir:</span>
-            <span id="ppdb-detail-ttl" class="font-bold text-slate-800 text-sm"></span>
-          </div>
-          <div>
-            <span class="text-slate-400 block font-semibold">Pilihan Jenjang/Kelas:</span>
-            <span id="ppdb-detail-program" class="font-bold text-amber-700 text-sm"></span>
-          </div>
-          <div>
-            <span class="text-slate-400 block font-semibold">Waktu Mendaftar:</span>
-            <span id="ppdb-detail-regdate" class="font-bold text-slate-800 text-sm"></span>
-          </div>
-        </div>
-
-        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 text-xs space-y-3">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <span class="text-slate-400 block font-semibold">Nama Orang Tua / Wali:</span>
-              <span id="ppdb-detail-parentname" class="font-bold text-slate-800 text-sm"></span>
-            </div>
-            <div>
-              <span class="text-slate-400 block font-semibold">Pekerjaan:</span>
-              <span id="ppdb-detail-parentjob" class="font-bold text-slate-800 text-sm"></span>
-            </div>
-          </div>
-          <div>
-            <span class="text-slate-400 block font-semibold">Nomor WhatsApp / HP:</span>
-            <div class="flex items-center gap-3 mt-1">
-              <span id="ppdb-detail-phone" class="font-mono font-bold text-slate-800 text-sm"></span>
-              <a id="ppdb-detail-wa-btn" href="#" target="_blank" class="px-3 py-1 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-bold text-xs flex items-center gap-1.5 transition">
-                <i class="fa-brands fa-whatsapp"></i> Chat WhatsApp
-              </a>
-            </div>
-          </div>
-          <div>
-            <span class="text-slate-400 block font-semibold">Alamat Lengkap:</span>
-            <span id="ppdb-detail-address" class="text-slate-700 leading-relaxed block mt-0.5"></span>
-          </div>
-        </div>
-
-        <!-- Verification Form -->
-        <form onsubmit="handleSavePPDBStatus(event)" class="bg-amber-50/60 p-5 rounded-2xl border border-amber-200/80 space-y-4">
-          <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
-            <i class="fa-solid fa-stamp text-amber-600"></i>
-            <span>Verifikasi & Tindak Lanjut Pendaftaran</span>
-          </h4>
-
-          <input type="hidden" id="ppdb-verify-id" value="">
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Status Kelulusan / Seleksi *</label>
-            <select id="ppdb-verify-status" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-amber-500 focus:outline-none bg-white">
-              <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
-              <option value="Diterima">Diterima (Lulus)</option>
-              <option value="Cadangan">Cadangan (Waiting List)</option>
-              <option value="Ditolak">Ditolak</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Petugas Verifikasi / Asesor</label>
-            <textarea id="ppdb-verify-notes" rows="3" placeholder="Tuliskan catatan kelengkapan berkas, hasil observasi anak, atau jadwal wawancara..." class="w-full px-4 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none bg-white"></textarea>
-          </div>
-
-          <div class="flex items-center justify-end gap-3 pt-2">
-            <button type="button" onclick="closePPDBDetailModal()" class="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-600 font-bold text-xs hover:bg-slate-100 transition">
-              Tutup
-            </button>
-            <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold text-xs shadow-md transition">
-              Simpan Hasil Verifikasi
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- 5. Modal Lightbox Foto -->
-  <div id="image-lightbox-modal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-md items-center justify-center p-4">
-    <div class="max-w-3xl w-full bg-slate-900 rounded-3xl overflow-hidden relative shadow-2xl">
-      <button onclick="closeLightbox()" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black transition">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-      <div class="max-h-[70vh] flex items-center justify-center bg-black/40">
-        <img id="lightbox-img" src="" class="max-h-[70vh] w-auto object-contain">
-      </div>
-      <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
-        <h5 id="lightbox-title" class="font-heading font-bold text-base truncate"></h5>
-        <button onclick="closeLightbox()" class="text-xs text-slate-400 hover:text-white font-bold">Tutup</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Scripts -->
-  <script src="assets/js/db.js"></script>
-  <script src="assets/js/admin.js"></script>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/site-render.js"></script>
+<script src="script.js"></script>
+<script>
+// Tutup modal PPDB saat mengklik area luar modal
+document.querySelectorAll('.modal-overlay').forEach(function(m){
+  m.addEventListener('click', function(e){
+    if(e.target === m) {
+      location.hash = '#close-modal';
+      if(history.replaceState) history.replaceState(null, null, ' ');
+    }
+  });
+});
+</script>
+<script src="admin-access.js"></script>
 </body>
 </html>
-
